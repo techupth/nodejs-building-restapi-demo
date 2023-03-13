@@ -2,13 +2,27 @@ import express from "express";
 
 import { blogPosts } from "./data/posts.js";
 
-let blogPostMockDatabase = blogPosts;
+let blogPostMockDatabase = [...blogPosts];
 
 const app = express();
 const port = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.delete("/posts/:postId", function (req, res) {
+  let postIdFromClient = Number(req.params.postId);
+
+  const newBlogPosts = blogPostMockDatabase.filter((item) => {
+    return item.id !== postIdFromClient;
+  });
+
+  blogPostMockDatabase = newBlogPosts;
+
+  return res.json({
+    message: "Blog post has been deleted successfully",
+  });
+});
 
 app.put("/posts/:postId", function (req, res) {
   let postIdFromClient = Number(req.params.postId);
