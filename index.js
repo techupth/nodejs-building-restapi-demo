@@ -10,6 +10,19 @@ const port = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.put("/posts/:postId", function (req, res) {
+  let postIdFromClient = Number(req.params.postId);
+  const blogPostIndex = blogPostMockDatabase.findIndex((item) => {
+    return item.id === postIdFromClient;
+  });
+
+  blogPostMockDatabase[blogPostIndex] = { id: postIdFromClient, ...req.body };
+
+  return res.json({
+    message: "Blog post has been updated successfully",
+  });
+});
+
 app.get("/posts/:postId", function (req, res) {
   let postIdFromClient = Number(req.params.postId);
   let postData = blogPostMockDatabase.filter(
