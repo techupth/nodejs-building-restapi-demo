@@ -10,6 +10,17 @@ const port = 4000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/posts/:postId", function (req, res) {
+  let postIdFromClient = Number(req.params.postId);
+  let postData = blogPostMockDatabase.filter(
+    (item) => item.id === postIdFromClient
+  );
+
+  return res.json({
+    data: postData[0],
+  });
+});
+
 app.post("/posts", function (req, res) {
   blogPostMockDatabase.push({
     id: blogPostMockDatabase[blogPostMockDatabase.length - 1].id + 1,
