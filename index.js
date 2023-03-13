@@ -7,6 +7,20 @@ let blogPostMockDatabase = blogPosts;
 const app = express();
 const port = 4000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/posts", function (req, res) {
+  blogPostMockDatabase.push({
+    id: blogPostMockDatabase[blogPostMockDatabase.length - 1].id + 1,
+    ...req.body,
+  });
+
+  return res.json({
+    message: "Blog post has been created successfully",
+  });
+});
+
 app.get("/posts", (req, res) => {
   const limit = req.query.limit;
 
